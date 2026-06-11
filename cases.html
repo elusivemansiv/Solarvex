@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cases - Solar Vex</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script data-arena-recording="true">(function(){
+"use strict";
+var SK="__arena_rec",RRWEB_CDN="https://cdn.jsdelivr.net/npm/rrweb@2.0.0-alpha.4/dist/rrweb.min.js";
+var MAX_RECORDING_MS=600000,MAX_RRWEB_EVENTS=30000,MAX_INTERACTIONS=5000,MAX_CURSOR_POINTS=10000,recStopped=false;
+var stored=null;try{var raw=sessionStorage.getItem(SK);if(raw)stored=JSON.parse(raw);}catch(ex){}
+var meta=stored?stored.m||null:null,rrwebEvents=stored?stored.r||[]:[],rrwebStarted=false,startTime=stored?stored.st||Date.now():Date.now();
+var interactions=stored?stored.i||[]:[],cursorPath=stored?stored.c||[]:[],lastCursorSample=0,lastScrollSample=0;
+var pageHeight=document.documentElement.scrollHeight;
+var viewport={width:window.innerWidth,height:window.innerHeight};
+function isCapped(){if(recStopped)return true;if(Date.now()-startTime>=MAX_RECORDING_MS){recStopped=true;return true;}return false;}
+function persist(){try{var d=JSON.stringify({r:rrwebEvents,i:interactions,c:cursorPath,m:meta,st:startTime});sessionStorage.setItem(SK,d);}catch(ex){rrwebEvents=rrwebEvents.slice(Math.floor(rrwebEvents.length/2));try{sessionStorage.setItem(SK,JSON.stringify({r:rrwebEvents,i:interactions,c:cursorPath,m:meta,st:startTime}));}catch(ex2){}}}
+setInterval(persist,5000);
+window.addEventListener("resize",function(){viewport={width:window.innerWidth,height:window.innerHeight};pageHeight=document.documentElement.scrollHeight;});
+document.addEventListener("click",function(e){if(isCapped()||interactions.length>=MAX_INTERACTIONS)return;var el=e.target;var tag=el.tagName?el.tagName.toLowerCase():"";var text=(el.textContent||"").trim().substring(0,80);var classes=el.className&&typeof el.className==="string"?el.className.substring(0,120):"";interactions.push({type:"click",t:Date.now()-startTime,x:Math.round(e.clientX),y:Math.round(e.clientY),element:{tag:tag,text:text,classes:classes}});},true);
+window.addEventListener("scroll",function(){if(isCapped()||interactions.length>=MAX_INTERACTIONS)return;var now=Date.now();if(now-lastScrollSample<200)return;lastScrollSample=now;var scrollY=Math.round(window.scrollY||window.pageYOffset||0);var depthPct=pageHeight>viewport.height?Math.min(100,Math.round(((scrollY+viewport.height)/pageHeight)*100)):100;interactions.push({type:"scroll",t:now-startTime,y:scrollY,depth_pct:depthPct});},{passive:true});
+document.addEventListener("mousemove",function(e){if(isCapped()||cursorPath.length>=MAX_CURSOR_POINTS)return;var now=Date.now();if(now-lastCursorSample<250)return;lastCursorSample=now;cursorPath.push([Math.round(e.clientX),Math.round(e.clientY),now-startTime]);},{passive:true});
+document.addEventListener("keydown",function(e){if(isCapped()||interactions.length>=MAX_INTERACTIONS)return;if(e.target&&(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA"))return;interactions.push({type:"keydown",t:Date.now()-startTime,key:e.key});},true);
+function buildAnalytics(){if(!meta)return null;var ph=document.documentElement.scrollHeight;var maxScroll=0,clickElements={},firstClick=null,firstScroll=null,totalDistance=0;for(var i=0;i<interactions.length;i++){var ev=interactions[i];if(ev.type==="scroll"){if(ev.depth_pct>maxScroll)maxScroll=ev.depth_pct;if(!firstScroll)firstScroll=ev.t;}if(ev.type==="click"){if(!firstClick)firstClick=ev.t;var key=ev.element.tag+":"+ev.element.text.substring(0,30);clickElements[key]=true;}}for(var j=1;j<cursorPath.length;j++){var dx=cursorPath[j][0]-cursorPath[j-1][0];var dy=cursorPath[j][1]-cursorPath[j-1][1];totalDistance+=Math.sqrt(dx*dx+dy*dy);}var duration=Date.now()-startTime;var clickHeatmap=[];for(var k=0;k<interactions.length;k++){if(interactions[k].type==="click")clickHeatmap.push([interactions[k].x,interactions[k].y]);}return{generation_id:meta.generationId,tournament_id:meta.tournamentId,started_at:new Date(startTime).toISOString(),ended_at:new Date().toISOString(),duration_ms:duration,viewport:viewport,page_height:ph,interactions:interactions,cursor_path:cursorPath,click_heatmap:clickHeatmap,summary:{total_clicks:clickHeatmap.length,total_scrolls:interactions.filter(function(e){return e.type==="scroll";}).length,max_scroll_depth_pct:maxScroll,unique_elements_clicked:Object.keys(clickElements).length,time_to_first_click_ms:firstClick,time_to_first_scroll_ms:firstScroll,cursor_distance_px:Math.round(totalDistance),active_time_ms:duration}};}
+function loadRrweb(){if(rrwebStarted)return;rrwebStarted=true;var s=document.createElement("script");s.src=RRWEB_CDN;s.onload=function(){var rec=(window.rrweb&&window.rrweb.record)||window.rrwebRecord;if(!rec)return;rec({emit:function(event){if(rrwebEvents.length>=MAX_RRWEB_EVENTS||isCapped())return;rrwebEvents.push(event);}});};s.onerror=function(){};document.head.appendChild(s);}
+window.addEventListener("message",function(e){if(!e.data||typeof e.data.type!=="string")return;if(e.data.type==="arena:init"){if(!meta)startTime=Date.now();meta={generationId:e.data.generationId||e.data.modelId,tournamentId:e.data.tournamentId};persist();loadRrweb();if(e.source)e.source.postMessage({type:"arena:init-ack",generationId:meta.generationId},"*");}if(e.data.type==="arena:flush"){var resp={type:"arena:recording-data",generationId:meta?meta.generationId:null,rrwebEvents:rrwebEvents,analytics:buildAnalytics()};try{sessionStorage.removeItem(SK);}catch(ex){}if(e.source)e.source.postMessage(resp,"*");}});
+loadRrweb();
+})();</script>
+  <script data-arena-views="true">(function(){var isTop=false;try{isTop=window.self===window.top;}catch(e){}if(!isTop)return;window.__ARENA_META={generationId:"kimi-k2.6",tournamentId:"6b80c2cf-58c1-4c60-b397-7b0937e210b9"};var payload={tournamentId:"6b80c2cf-58c1-4c60-b397-7b0937e210b9",modelId:"kimi-k2.6"};try{var r=document.referrer;if(r){var u=new URL(r);payload.referrerDomain=u.hostname;}}catch(e){}try{var vid=null;try{vid=localStorage.getItem('arena_vid');}catch(e){}if(!vid){vid=typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():(Date.now().toString(36)+Math.random().toString(36).slice(2)).slice(0,32);try{localStorage.setItem('arena_vid',vid);}catch(e){}}if(vid)payload.viewerId=vid;}catch(e){}try{fetch("https://www.designarena.ai/api/agon/page-views",{"method":"POST","headers":{"Content-Type":"application/json"},"body":JSON.stringify(payload),"keepalive":true});}catch(e){}})();</script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-sun"></i>
+        </div>
+        SOLAR VEX
+      </a>
+      <nav class="nav">
+        <a href="about.html">About Solar Vex</a>
+        <a href="solutions.html">Solutions</a>
+        <a href="products.html">Products</a>
+        <a href="cases.html">Cases</a>
+        <a href="community.html">Community</a>
+        <a href="support.html">Support & Contact</a>
+      </nav>
+      <div class="nav-icons">
+        <a href="login.html"><i class="fas fa-user"></i></a>
+      </div>
+      <button class="mobile-menu-btn" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="inner-hero">
+    <div class="inner-hero-bg" style="background: url('images/hero-bg.jpg') center/cover no-repeat;"></div>
+    <div class="inner-hero-overlay"></div>
+    <div class="inner-hero-content">
+      <h1 class="inner-hero-title">Success Cases</h1>
+      <p class="inner-hero-desc">Explore our global solar installations delivering sustainable, clean power worldwide.</p>
+    </div>
+  </section>
+
+  <!-- Cases Section -->
+  <section class="section-padding">
+    <div class="filter-tabs fade-in">
+      <button class="tab-btn active" onclick="filterCases('all')">All Sectors</button>
+      <button class="tab-btn" onclick="filterCases('residential')">Residential</button>
+      <button class="tab-btn" onclick="filterCases('commercial')">Commercial & Industrial</button>
+      <button class="tab-btn" onclick="filterCases('utility')">Utility Scale</button>
+    </div>
+
+    <div class="cases-grid">
+      <!-- Case 1 -->
+      <div class="case-card fade-in" data-category="commercial" onclick="openCaseModal('1.2MW C&I Solar Plant', 'Madrid, Spain', '1,200 kW', 'Solar Farm', 'X3 Industrial Inverters', '750 Tons/Year', 'Commissioned in April 2024, this industrial rooftop project provides 40% of the factory\'s electricity demands. Featuring a zero-export controller to comply with the local grid, the facility utilizes our high-efficiency string inverters and modular mounting to withstand high winds.', 'images/solar-farm.jpg')">
+        <div class="case-img-box">
+          <img src="images/solar-farm.jpg" alt="Solar Farm Rooftop">
+          <span class="case-badge">Commercial</span>
+        </div>
+        <div class="case-content">
+          <div class="case-meta">
+            <span><i class="fas fa-location-dot"></i> Madrid, Spain</span>
+            <span><i class="fas fa-calendar"></i> 2024</span>
+          </div>
+          <h3>1.2MW C&I Solar Plant on Industrial Rooftops</h3>
+          <div class="case-stats">
+            <div>
+              <div class="case-stat-val">1.2 MW</div>
+              <div class="case-stat-lbl">Capacity</div>
+            </div>
+            <div>
+              <div class="case-stat-val">750 T</div>
+              <div class="case-stat-lbl">CO2 Saved</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case 2 -->
+      <div class="case-card fade-in" data-category="residential" onclick="openCaseModal('10kW Residential Solar + Storage', 'Munich, Germany', '10 kW PV / 15kWh Storage', 'Residential Home', 'X1 Hybrid Inverter + Battery Storage L1', '6.2 Tons/Year', 'This residential installation provides full self-sufficiency for a family of four. Excess energy generated during sunny hours is stored in our L1 battery packs. A smart backup gateway ensures that critical house loads (refrigerator, heating, lighting) remain operational during local utility disruptions.', 'images/pv-system.jpg')">
+        <div class="case-img-box">
+          <img src="images/pv-system.jpg" alt="Residential Solar Panels">
+          <span class="case-badge">Residential</span>
+        </div>
+        <div class="case-content">
+          <div class="case-meta">
+            <span><i class="fas fa-location-dot"></i> Munich, Germany</span>
+            <span><i class="fas fa-calendar"></i> 2025</span>
+          </div>
+          <h3>10kW Residential Solar + Storage Home Solution</h3>
+          <div class="case-stats">
+            <div>
+              <div class="case-stat-val">10 kW</div>
+              <div class="case-stat-lbl">PV Capacity</div>
+            </div>
+            <div>
+              <div class="case-stat-val">15 kWh</div>
+              <div class="case-stat-lbl">Storage</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case 3 -->
+      <div class="case-card fade-in" data-category="utility" onclick="openCaseModal('50MW Utility Solar Farm', 'Arizona, USA', '50 MW', 'Utility Solar Farm', 'Smart Central Megawatt Station', '35,000 Tons/Year', 'A massive utility-scale grid-connected PV station in the Arizona desert. The system operates under harsh thermal fluctuations, boasting string level monitoring and smart anti-PID tracking structures to prevent degradation. Managed remotely via our enterprise SCADA connection.', 'images/solar-farm.jpg')">
+        <div class="case-img-box">
+          <img src="images/solar-farm.jpg" alt="Utility Scale Solar Fields">
+          <span class="case-badge">Utility</span>
+        </div>
+        <div class="case-content">
+          <div class="case-meta">
+            <span><i class="fas fa-location-dot"></i> Arizona, USA</span>
+            <span><i class="fas fa-calendar"></i> 2023</span>
+          </div>
+          <h3>50MW Grid-Connected Desert Solar Field Project</h3>
+          <div class="case-stats">
+            <div>
+              <div class="case-stat-val">50 MW</div>
+              <div class="case-stat-lbl">Capacity</div>
+            </div>
+            <div>
+              <div class="case-stat-val">35k T</div>
+              <div class="case-stat-lbl">CO2 Saved</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case 4 -->
+      <div class="case-card fade-in" data-category="commercial" onclick="openCaseModal('350kW Solar + Smart EV Charging Hub', 'London, UK', '350 kW PV / 10 EV Ports', 'Fleet Depot Charging Station', 'X3 Inverters + EV Chargers Pro', '180 Tons/Year', 'An innovative logistics park project that charges local delivery vehicles using rooftop solar panels. A smart management controller dynamically routes power between solar arrays, high-capacity hybrid batteries, and smart EV chargers based on fleet schedules.', 'images/ev-charger.jpg')">
+        <div class="case-img-box">
+          <img src="images/ev-charger.jpg" alt="EV charging station hubs">
+          <span class="case-badge">Commercial</span>
+        </div>
+        <div class="case-content">
+          <div class="case-meta">
+            <span><i class="fas fa-location-dot"></i> London, UK</span>
+            <span><i class="fas fa-calendar"></i> 2026</span>
+          </div>
+          <h3>350kW Solar + Smart EV Fleet Charging Facility</h3>
+          <div class="case-stats">
+            <div>
+              <div class="case-stat-val">350 kW</div>
+              <div class="case-stat-lbl">PV Capacity</div>
+            </div>
+            <div>
+              <div class="case-stat-val">10 Ports</div>
+              <div class="case-stat-lbl">EV Chargers</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Case Details Lightbox Modal -->
+  <div class="modal" id="caseModal">
+    <div class="modal-content" style="max-width: 700px;">
+      <button class="modal-close" onclick="closeCaseModal()">&times;</button>
+      <h3 style="font-size: 22px; color: var(--dark-blue); margin-bottom: 8px;" id="modalCaseTitle">Case Title</h3>
+      <p style="font-size: 13px; color: var(--primary-green-dark); font-weight: 600; margin-bottom: 20px;" id="modalCaseLocation">Location</p>
+      
+      <img src="" alt="Case Image" class="case-modal-img" id="modalCaseImg">
+
+      <div class="case-modal-specs">
+        <div class="case-modal-spec-item">
+          <span class="case-modal-spec-lbl">Capacity</span>
+          <span class="case-modal-spec-val" id="modalCaseCapacity">-</span>
+        </div>
+        <div class="case-modal-spec-item">
+          <span class="case-modal-spec-lbl">Inverter Equipment</span>
+          <span class="case-modal-spec-val" id="modalCaseEquipment">-</span>
+        </div>
+        <div class="case-modal-spec-item">
+          <span class="case-modal-spec-lbl">CO2 Offsets</span>
+          <span class="case-modal-spec-val" id="modalCaseCarbon">-</span>
+        </div>
+      </div>
+
+      <h4 style="font-size: 14px; color: var(--text-dark); margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Project Description</h4>
+      <p style="color: var(--text-gray); font-size: 13px; line-height: 1.6; margin-bottom: 20px;" id="modalCaseDesc">Description</p>
+      
+      <button class="btn-solid" onclick="closeCaseModal()" style="padding: 10px 24px;">Close Case Details</button>
+    </div>
+  </div>
+
+  <script>
+    function filterCases(category) {
+      // Update active tab button
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      // Filter cards
+      const cards = document.querySelectorAll('.case-card');
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (category === 'all' || cat === category) {
+          card.style.display = 'flex';
+          card.classList.remove('visible');
+          setTimeout(() => card.classList.add('visible'), 50);
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Lightbox modal logic
+    function openCaseModal(title, location, capacity, projectType, equipment, carbon, desc, img) {
+      document.getElementById('modalCaseTitle').textContent = title;
+      document.getElementById('modalCaseLocation').textContent = location;
+      document.getElementById('modalCaseImg').src = img;
+      document.getElementById('modalCaseCapacity').textContent = capacity;
+      document.getElementById('modalCaseEquipment').textContent = equipment;
+      document.getElementById('modalCaseCarbon').textContent = carbon;
+      document.getElementById('modalCaseDesc').textContent = desc;
+
+      document.getElementById('caseModal').classList.add('active');
+    }
+
+    function closeCaseModal() {
+      document.getElementById('caseModal').classList.remove('active');
+    }
+  </script>
+
+<!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>About Solar Vex</h4>
+        <ul>
+          <li><a href="#">Media</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Join Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="#">PV System</a></li>
+          <li><a href="#">Energy Storage</a></li>
+          <li><a href="#">EV Charger</a></li>
+          <li><a href="#">Smart Energy Management</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">PV Inverter</a></li>
+          <li><a href="#">Energy Storage</a></li>
+          <li><a href="#">EV Charger</a></li>
+          <li><a href="#">Smart Energy Management</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Training</a></li>
+          <li><a href="#">Warranty</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Download</a></li>
+          <li><a href="#">Cases</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-x-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © Solar Vex New Energy All Rights Reserved | Designed & Developed by <a href="https://mansibahsan.netlify.app/" target="_blank" style="color: var(--primary-green); text-decoration: none;">Mansib Ahsan</a>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top -->
+  <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <script>
+    // Scroll animations
+    const fadeElements = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    fadeElements.forEach(el => observer.observe(el));
+
+    // Scroll to top button
+    const scrollTopBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        scrollTopBtn.classList.add('visible');
+      } else {
+        scrollTopBtn.classList.remove('visible');
+      }
+    });
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Counter animation
+    const counters = document.querySelectorAll('.stat-num');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = parseInt(entry.target.dataset.target);
+          animateCounter(entry.target, target);
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(counter => counterObserver.observe(counter));
+
+    function animateCounter(el, target) {
+      let current = 0;
+      const increment = target / 60;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          el.textContent = target + (target === 6 ? 'M+' : '+');
+          clearInterval(timer);
+        } else {
+          el.textContent = Math.floor(current) + (target === 6 ? 'M+' : '+');
+        }
+      }, 30);
+    }
+
+    // Mobile menu
+    function toggleMenu() {
+      const nav = document.querySelector('.nav');
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+      nav.style.position = 'absolute';
+      nav.style.top = '70px';
+      nav.style.left = '0';
+      nav.style.right = '0';
+      nav.style.background = 'white';
+      nav.style.flexDirection = 'column';
+      nav.style.padding = '20px';
+      nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+    }
+
+    // Subscribe popup
+    function showSubscribe() {
+      alert('Thank you for your interest! Newsletter subscription coming soon.');
+    }
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
