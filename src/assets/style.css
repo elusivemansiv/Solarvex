@@ -196,7 +196,7 @@
     .hero-products {
       position: absolute;
       right: 5%;
-      bottom: 0;
+      bottom: 40px;
       width: 400px;
       display: flex;
       flex-direction: column;
@@ -814,7 +814,7 @@
         font-size: 36px;
       }
       .solutions-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
       }
       .support-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -844,11 +844,78 @@
       .hero-title {
         font-size: 28px;
       }
+      .solutions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
       .support-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .solution-card {
+        height: 240px;
+      }
+      .solution-name {
+        font-size: 14px;
       }
       .footer-inner {
         grid-template-columns: 1fr;
+      }
+      .solutions, .support, .media {
+        padding: 60px 20px;
+      }
+      .global-stats {
+        padding: 60px 20px;
+      }
+      .global-stats h2 {
+        font-size: 24px;
+        line-height: 1.3;
+      }
+      .global-stats-sub {
+        font-size: 14px;
+        margin-bottom: 40px;
+      }
+      .section-title h2 {
+        font-size: 26px;
+      }
+      .section-padding {
+        padding: 40px 20px;
+      }
+      .inner-hero {
+        margin-top: 60px;
+        height: 240px;
+      }
+      .inner-hero-title {
+        font-size: 28px;
+      }
+      .inner-hero-desc {
+        font-size: 14px;
+      }
+      .downloads-table {
+        display: block;
+        overflow-x: auto;
+      }
+      .partner-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .warranty-input-group {
+        flex-direction: column;
+        border-radius: 12px;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        padding: 0;
+      }
+      .warranty-input-group input {
+        border-radius: 30px;
+        background: white;
+        border: 1px solid rgba(0,0,0,0.08);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .warranty-input-group button {
+        width: 100%;
       }
     }
 
@@ -2063,6 +2130,33 @@
       color: var(--text-light);
     }
 
+    .rd-title {
+      font-size: 32px;
+      color: var(--dark-blue);
+      margin-bottom: 20px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    /* Inner Page Grid Classes */
+    .about-rd-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+    }
+    .about-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .support-contact-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 50px;
+      align-items: start;
+    }
+
     /* Grid layout adjustments and responsiveness */
     @media (max-width: 1024px) {
       .products-layout {
@@ -2116,6 +2210,14 @@
       .partner-grid {
         grid-template-columns: repeat(3, 1fr);
       }
+      .about-rd-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .support-contact-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
     }
 
     @media (max-width: 600px) {
@@ -2128,10 +2230,25 @@
       .offices-grid {
         grid-template-columns: 1fr;
       }
+      .values-grid {
+        grid-template-columns: 1fr;
+      }
       .downloads-table th:nth-child(2),
-      .downloads-table td:nth-child(2) {
+      .downloads-table td:nth-child(2),
+      .downloads-table th:nth-child(3),
+      .downloads-table td:nth-child(3) {
         display: none;
       }
+      .downloads-table {
+        white-space: nowrap;
+      }
+      .rd-title {
+        font-size: 24px;
+        word-wrap: break-word;
+      }
+      .partner-logo {
+        font-size: 11px;
+        padding: 10px 5px;
+        word-break: break-all;
+      }
     }
-
-  
