@@ -1,8 +1,10 @@
 <script setup>
 import { inject, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const { isAuthModalActive, closeAuthModal } = inject('authModalControl')
 const activeTab = ref('login')
+const router = useRouter()
 
 const switchForm = (tab) => {
   activeTab.value = tab
@@ -12,12 +14,14 @@ const handleLoginSubmit = (e) => {
   e.preventDefault();
   alert('Welcome to Solar Vex! Login successful.');
   closeAuthModal();
+  router.push('/dashboard');
 }
 
 const handleRegisterSubmit = (e) => {
   e.preventDefault();
   alert('Registration successful! Please check your email.');
   closeAuthModal();
+  router.push('/dashboard');
 }
 </script>
 

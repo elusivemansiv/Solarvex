@@ -1,9 +1,10 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, inject } from 'vue'
 import { useRoute } from 'vue-router'
 
 const isMobileMenuOpen = ref(false)
 const route = useRoute()
+const { openAuthModal } = inject('authModalControl')
 
 const toggleMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
@@ -46,7 +47,7 @@ watch(route, () => {
         <router-link to="/support">Support & Contact</router-link>
       </nav>
       <div class="nav-icons">
-        <router-link to="/login"><i class="fas fa-user"></i></router-link>
+        <a href="#" @click.prevent="openAuthModal"><i class="fas fa-user"></i></a>
       </div>
       <button class="mobile-menu-btn" @click="toggleMenu">
         <i class="fas fa-bars"></i>

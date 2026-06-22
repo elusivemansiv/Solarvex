@@ -6,7 +6,7 @@ import Products from '../views/Products.vue'
 import Cases from '../views/Cases.vue'
 import Community from '../views/Community.vue'
 import Support from '../views/Support.vue'
-import Login from '../views/Login.vue'
+import Dashboard from '../views/Dashboard.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -16,7 +16,7 @@ const routes = [
   { path: '/cases', component: Cases },
   { path: '/community', component: Community },
   { path: '/support', component: Support },
-  { path: '/login', component: Login }
+  { path: '/dashboard', component: Dashboard }
 ]
 
 const router = createRouter({
