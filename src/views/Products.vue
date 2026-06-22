@@ -82,7 +82,7 @@ onMounted(() => {
 <!-- Hero -->
   <!-- Hero -->
   <section class="inner-hero">
-    <div class="inner-hero-bg" style="background: url('images/hero-bg.jpg') center/cover no-repeat;"></div>
+    <div class="inner-hero-bg" style="background: url('/images/hero-bg.jpg') center/cover no-repeat;"></div>
     <div class="inner-hero-overlay"></div>
     <div class="inner-hero-content">
       <h1 class="inner-hero-title">Product Catalog</h1>
